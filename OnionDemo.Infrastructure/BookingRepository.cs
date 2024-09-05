@@ -56,11 +56,10 @@ namespace OnionDemo.Infrastructure
                         entry.OriginalValues.SetValues(databaseValues);
                         entry.CurrentValues.SetValues(booking);
 
-                        //Update the rowversion to the current value
+
                         entry.Property(nameof(booking.RowVersion)).OriginalValue = databaseValues.RowVersion;
 
                         _db.SaveChanges();
-                        
                     }
 
                 }
@@ -72,6 +71,35 @@ namespace OnionDemo.Infrastructure
             }
 
 
+        }
+
+        public void DeleteBooking(int id)
+        {
+            using (var transaction = _db.Database.BeginTransaction(IsolationLevel.Serializable))
+            {
+                try
+                {
+                    var booking = _db.Bookings.Single(a => a.Id == id);
+                    if (booking == null)
+                    {
+                        throw new Exception("Booking not found");
+                    }
+
+                    _db.Bookings.Remove(booking);
+                    _db.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception("Concurrency issue occured while deleting the booking", ex);
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw new Exception("An error occured while deleting booking", ex);
+                }
+            }
         }
     }
 }
