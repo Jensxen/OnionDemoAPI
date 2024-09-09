@@ -43,7 +43,13 @@ namespace OnionDemo.Application.Command
         void IBookingCommand.DeleteBooking(DeleteBookingDto deleteBookingDto)
         {
             // Load
+            var booking = _repository.GetBooking(deleteBookingDto.Id);
+            if (booking == null)
+            {
+                throw new Exception("Booking not found.");
+            }
             // Do
+            _repository.DeleteBooking(deleteBookingDto.Id);
             // Save
         }
 

@@ -34,4 +34,12 @@ app.MapGet("/booking/{id}", (int id, IBookingQuery query) => query.GetBooking(id
 app.MapPost("/booking", (CreateBookingDto booking, IBookingCommand command) => command.CreateBooking(booking));
 app.MapPut("/booking", (UpdateBookingDto booking, IBookingCommand command) => command.UpdateBooking(booking));
 
+//DELETE
+app.MapDelete("/booking/{id}", (int id, IBookingCommand command) =>
+{
+    var deleteBookingDto = new DeleteBookingDto { Id = id };
+    command.DeleteBooking(deleteBookingDto);
+    return Results.Ok(new { message = "Electrochemistry [Legendary: Success] - Booking blev fucking slettet baybeeeeeeee." });
+});
+
 app.Run();
