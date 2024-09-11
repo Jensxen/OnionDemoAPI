@@ -3,19 +3,12 @@ using OnionDemo.Domain.DomainServices;
 
 namespace OnionDemo.Domain.Entity;
 
-public abstract class DomainEntity
-{
-    public int Id { get; protected set; }
-    [Timestamp]
-    public byte[] RowVersion { get; protected set; } = null!;
-}
-
-
 public class Booking : DomainEntity
 {
+    protected Booking()
+    {
 
-
-    protected Booking(){}
+    }
 
     private Booking(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService)
     {
