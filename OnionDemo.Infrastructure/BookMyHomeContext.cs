@@ -16,6 +16,7 @@ namespace OnionDemo.Infrastructure
         }
 
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Accommodation> Accommodations { get; set; }
 
     }
 }

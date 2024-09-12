@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnionDemo.Application;
 using OnionDemo.Application.Query;
+using OnionDemo.Application.Repository;
 using OnionDemo.Domain.DomainServices;
 using OnionDemo.Infrastructure.Queries;
 
@@ -15,6 +16,8 @@ public static class DependencyInjection
         services.AddScoped<IBookingQuery, BookingQuery>();
         services.AddScoped<IBookingDomainService, BookingDomainService>();
         services.AddScoped<IBookingRepository, BookingRepository>();
+        services.AddScoped<IAccommodationRepository, AccommodationRepository>();
+        
 
         // Database
         // https://github.com/dotnet/SqlClient/issues/2239

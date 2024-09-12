@@ -28,7 +28,58 @@ public class Accommodation: DomainEntity
     {
     }
 
-    public Accommodation(Host host, string name, string description, string address, string city, string country, int rooms, int beds, int bathrooms, int maxGuests, double pricePerNight, bool isActive)
+    public Accommodation(Host host, 
+        string name, 
+        string description, 
+        string address, 
+        string city, 
+        string country, 
+        int rooms, 
+        int beds, 
+        int bathrooms, 
+        int maxGuests, 
+        double pricePerNight, 
+        bool isActive)
+    {
+        Host = host;
+        Name = name;
+        Description = description;
+        Address = address;
+        City = city;
+        Country = country;
+        Rooms = rooms;
+        Beds = beds;
+        Bathrooms = bathrooms;
+        MaxGuests = maxGuests;
+        PricePerNight = pricePerNight;
+        IsActive = isActive;
+    }
+    
+    //assure no booking before deleting accommodation
+
+    protected void AssureNoBookings()
+    {
+        if (Bookings.Any())
+            throw new Exception("Accommodation has bookings, cannot delete");
+    }
+
+    public void Delete()
+    {
+        AssureNoBookings();
+    }
+
+    public void Update(Host host, 
+        string name, 
+        string description, 
+        string address, 
+        string city, 
+        string country, 
+        int rooms, 
+        int beds, 
+        int bathrooms, 
+        int maxGuests, 
+        double pricePerNight, 
+        bool isActive)
     {
         Host = host;
         Name = name;
@@ -44,6 +95,33 @@ public class Accommodation: DomainEntity
         IsActive = isActive;
     }
 
-
+    //need
+    public static Accommodation Create(Host host, 
+        string name, 
+        string description, 
+        string address, 
+        string city, 
+        string country, 
+        int rooms, 
+        int beds, 
+        int bathrooms, 
+        int maxGuests, 
+        double pricePerNight, 
+        bool isActive
+        )
+    {
+        return new Accommodation(host, 
+            name, 
+            description, 
+            address, 
+            city, 
+            country, 
+            rooms, 
+            beds, 
+            bathrooms, 
+            maxGuests, 
+            pricePerNight, 
+            isActive);
+    }
 
 }

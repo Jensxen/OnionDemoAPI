@@ -13,6 +13,5 @@ namespace OnionDemo.Application
         void AddBooking(Booking booking);
         void UpdateBooking(Booking booking, byte[] rowversion);
         void DeleteBooking(int id);
-
     }
 }

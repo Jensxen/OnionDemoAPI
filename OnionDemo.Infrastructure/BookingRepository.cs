@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnionDemo.Application;
+using OnionDemo.Application.Repository;
 using OnionDemo.Domain.Entity;
 
 namespace OnionDemo.Infrastructure
@@ -13,6 +14,7 @@ namespace OnionDemo.Infrastructure
     public class BookingRepository : IBookingRepository
     {
         private readonly BookMyHomeContext _db;
+        
         public BookingRepository(BookMyHomeContext context)
         {
             _db = context;
@@ -35,6 +37,8 @@ namespace OnionDemo.Infrastructure
             {
                 try
                 {
+                    
+
                     _db.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowversion;
                     _db.SaveChanges();
                     transaction.Commit();
@@ -97,7 +101,7 @@ namespace OnionDemo.Infrastructure
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    throw new Exception("An error occured while deleting booking", ex);
+                    throw new Exception("Weed");
                 }
             }
         }

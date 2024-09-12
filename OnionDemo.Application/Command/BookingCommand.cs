@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OnionDemo.Application.Command.CommandDto;
+using OnionDemo.Application.Repository;
 using OnionDemo.Domain.DomainServices;
 using OnionDemo.Domain.Entity;
 
@@ -13,11 +14,13 @@ namespace OnionDemo.Application.Command
     {
         private readonly IBookingRepository _repository;
         private readonly IBookingDomainService _domainService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BookingCommand(IBookingRepository repository, IBookingDomainService domainService)
+        public BookingCommand(IBookingRepository repository, IBookingDomainService domainService, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _domainService = domainService;
+            _unitOfWork = unitOfWork;
         }
         void IBookingCommand.CreateBooking(CreateBookingDto bookingDto)
         {
