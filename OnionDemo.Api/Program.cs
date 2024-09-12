@@ -3,6 +3,7 @@ using OnionDemo.Application.Command;
 using OnionDemo.Application.Command.CommandDto;
 using OnionDemo.Application.Query;
 using OnionDemo.Infrastructure;
+using OnionDemo.Infrastructure.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddSwaggerGen();
 // Application and Infrastructure services
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+
 
 var app = builder.Build();
 

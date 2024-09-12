@@ -8,6 +8,7 @@ namespace OnionDemo.Domain.Entity
 {
     public class Host : User
     {
-        public string HostName { get; protected set; }
+        public int HostId { get; protected set; }
+        public string HostName {get; protected set; }
     }
 }

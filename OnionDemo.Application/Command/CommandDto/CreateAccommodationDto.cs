@@ -1,13 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using OnionDemo.Domain.Entity;
+﻿using OnionDemo.Domain.Entity;
 
-namespace OnionDemo.Application.Query.QueryDto;
+namespace OnionDemo.Application.Command.CommandDto;
 
-public record AccommodationDto()
+public class CreateAccommodationDto
 {
-    public int Id { get; set; }
-    [Timestamp]
-    public byte [] RowVersion { get; set; }
     public int HostId { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
@@ -28,4 +24,4 @@ public record AccommodationDto()
     //public List<Types> Types { get; set; }
     //public List<Service> Services { get; set; }
     //public List<Tag> Tags { get; set; }
-};
+}

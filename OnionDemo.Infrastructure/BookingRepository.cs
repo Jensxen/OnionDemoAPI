@@ -37,8 +37,6 @@ namespace OnionDemo.Infrastructure
             {
                 try
                 {
-                    
-
                     _db.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowversion;
                     _db.SaveChanges();
                     transaction.Commit();

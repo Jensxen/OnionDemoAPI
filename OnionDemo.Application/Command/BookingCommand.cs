@@ -12,50 +12,93 @@ namespace OnionDemo.Application.Command
 {
     public class BookingCommand : IBookingCommand
     {
-        private readonly IBookingRepository _repository;
         private readonly IBookingDomainService _domainService;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IBookingRepository _repository;
+        private readonly IUnitOfWork _uow;
 
-        public BookingCommand(IBookingRepository repository, IBookingDomainService domainService, IUnitOfWork unitOfWork)
+        public BookingCommand(IUnitOfWork uow, IBookingRepository repository, IBookingDomainService domainService)
         {
+            _uow = uow;
             _repository = repository;
             _domainService = domainService;
-            _unitOfWork = unitOfWork;
         }
+
         void IBookingCommand.CreateBooking(CreateBookingDto bookingDto)
         {
-            // Do
-            var booking = Booking.Create(bookingDto.StartDate, bookingDto.EndDate, _domainService);
+            try
+            {
+                _uow.BeginTransaction();
 
-            // Save
-            _repository.AddBooking(booking);
+                // Do
+                var booking = Booking.Create(bookingDto.StartDate, bookingDto.EndDate, _domainService);
+
+                // Save
+                _repository.AddBooking(booking);
+
+                _uow.Commit();
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    _uow.Rollback();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Rollback failed: {ex.Message}", e);
+                }
+
+                throw;
+            }
         }
 
         void IBookingCommand.UpdateBooking(UpdateBookingDto updateBookingDto)
         {
-            // Load
-            var booking = _repository.GetBooking(updateBookingDto.Id);
+            try
+            {
+                _uow.BeginTransaction();
+                // Load
+                var booking = _repository.GetBooking(updateBookingDto.Id);
 
-            // Do
-            booking.Update(updateBookingDto.StartDate, updateBookingDto.EndDate, _domainService);
+                // Do
+                booking.Update(updateBookingDto.StartDate, updateBookingDto.EndDate, _domainService);
 
-            // Save
-            _repository.UpdateBooking(booking, updateBookingDto.RowVersion);
+                // Save
+                _repository.UpdateBooking(booking, updateBookingDto.RowVersion);
+                _uow.Commit();
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    _uow.Rollback();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Rollback failed: {ex.Message}", e);
+                }
+
+                throw;
+            }
         }
-
         void IBookingCommand.DeleteBooking(DeleteBookingDto deleteBookingDto)
         {
-            // Load
-            var booking = _repository.GetBooking(deleteBookingDto.Id);
-            if (booking == null)
+            try
             {
-                throw new Exception("Booking not found.");
+                _uow.BeginTransaction();
+                var booking = _repository.GetBooking(deleteBookingDto.Id);
+                if (booking == null)
+                {
+                    throw new Exception("Booking not found.");
+                }
+                _repository.DeleteBooking(deleteBookingDto.Id);
+                _uow.Commit();
+
             }
-            // Do
-            _repository.DeleteBooking(deleteBookingDto.Id);
-            // Save
+            catch (Exception e)
+            {
+                throw new Exception($"Rollback failed: {e.Message}");
+            }
         }
-
-
     }
 }

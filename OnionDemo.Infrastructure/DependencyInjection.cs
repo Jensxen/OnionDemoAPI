@@ -17,19 +17,17 @@ public static class DependencyInjection
         services.AddScoped<IBookingDomainService, BookingDomainService>();
         services.AddScoped<IBookingRepository, BookingRepository>();
         services.AddScoped<IAccommodationRepository, AccommodationRepository>();
-        
+        services.AddScoped<IUnitOfWork, UnitOfWork<BookMyHomeContext>>();
 
-        // Database
-        // https://github.com/dotnet/SqlClient/issues/2239
-        // https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/projects?tabs=dotnet-core-cli
-        // Add-Migration InitialMigration -Context BookMyHomeContext -Project OnionDemo.DatabaseMigration
-        // Update-Database -Context BookMyHomeContext -Project OnionDemo.DatabaseMigration
+        // Register DbContext
         services.AddDbContext<BookMyHomeContext>(options =>
             options.UseSqlServer(
                 configuration.GetConnectionString
                     ("BookMyHomeDbConnection"),
-                x =>
+                x => 
                     x.MigrationsAssembly("OnionDemo.DatabaseMigration")));
+
         return services;
     }
+
 }
