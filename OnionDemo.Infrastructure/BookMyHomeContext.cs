@@ -17,6 +17,22 @@ namespace OnionDemo.Infrastructure
 
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Accommodation> Accommodations { get; set; }
+        public DbSet<Host> Hosts { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Booking>()
+                .HasOne(a => a.Accommodation)
+                .WithMany(b => b.Bookings)
+                .HasForeignKey(a => a.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Accommodation>()
+                .HasOne(a => a.Host)
+                .WithMany(b => b.Accommodations)
+                .HasForeignKey(a => a.HostId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

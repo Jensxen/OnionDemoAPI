@@ -1,40 +1,71 @@
-﻿using OnionDemo.Application.Repository;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using OnionDemo.Application.Repository;
 using OnionDemo.Domain.Entity;
 
-namespace OnionDemo.Infrastructure;
-
-public class AccommodationRepository : IAccommodationRepository
+namespace OnionDemo.Infrastructure
 {
-    private readonly BookMyHomeContext _db;
-
-    public AccommodationRepository(BookMyHomeContext context)
+    public class AccommodationRepository : IAccommodationRepository
     {
-        _db = context;
-    }
+        private readonly BookMyHomeContext _context;
 
-    Accommodation IAccommodationRepository.GetAccommodation(int id)
-    {
-        return _db.Accommodations.Single(a => a.Id == id);
-    }
+        public AccommodationRepository(BookMyHomeContext context)
+        {
+            _context = context;
+        }
 
-    void IAccommodationRepository.AddAccommodation(Accommodation accommodation)
-    {
-        _db.Accommodations.Add(accommodation);
-        _db.SaveChanges();
-    }
+        public Accommodation GetAccommodation(int id)
+        {
+            return _context.Accommodations
+                .Include(a => a.Bookings)
+                .FirstOrDefault(a => a.Id == id);
+        }
 
-    void IAccommodationRepository.UpdateAccommodation(Accommodation accommodation, byte[] rowversion)
-    {
-        
-    }
+        public void AddAccommodation(Accommodation accommodation)
+        {
+            _context.Accommodations.Add(accommodation);
+            _context.SaveChanges();
+        }
 
-    public void DeleteAccommodation(Accommodation accommodation, byte[] rowversion)
-    {
-        throw new NotImplementedException();
-    }
+        public void UpdateAccommodation(Accommodation accommodation, byte[] rowversion)
+        {
+            _context.Accommodations.Update(accommodation);
+            _context.SaveChanges();
+        }
 
-    void IAccommodationRepository.DeleteAccommodation(int id)
-    {
-        throw new NotImplementedException();
+        public IEnumerable<Accommodation> getOtherAccommodations()
+        {
+            return _context.Accommodations
+                .Include(a => a.Bookings)
+                .ToList();
+        }
+
+        public void DeleteAccommodation(int id, byte[] rowversion)
+        {
+            var accommodation = _context.Accommodations.Find(id);
+            if (accommodation != null)
+            {
+                _context.Accommodations.Remove(accommodation);
+                _context.SaveChanges();
+            }
+        }
+
+        public Accommodation GetAccommodationById(int id)
+        {
+            return _context.Accommodations
+                .Include(a => a.Bookings)
+                .FirstOrDefault(a => a.Id == id);
+        }
+
+        public void DeleteAccommodation(int id)
+        {
+            var accommodation = _context.Accommodations.Find(id);
+            if (accommodation != null)
+            {
+                _context.Accommodations.Remove(accommodation);
+                _context.SaveChanges();
+            }
+        }
     }
 }

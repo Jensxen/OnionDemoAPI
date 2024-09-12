@@ -23,6 +23,7 @@ public class Booking : DomainEntity
     public DateOnly StartDate { get; protected set; }
     public DateOnly EndDate { get; protected set; }
     public Accommodation Accommodation { get; protected set; }
+    public Host Host { get; protected set; }
 
     protected void AssureStartDateBeforeEndDate()
     {

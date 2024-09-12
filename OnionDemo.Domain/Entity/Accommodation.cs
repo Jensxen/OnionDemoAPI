@@ -2,6 +2,7 @@
 
 public class Accommodation: DomainEntity
 {
+    public Host Host { get; protected set; }
     public int HostId { get; protected set; }
     public string Name { get; protected set; }
     public string Description { get; protected set; }
