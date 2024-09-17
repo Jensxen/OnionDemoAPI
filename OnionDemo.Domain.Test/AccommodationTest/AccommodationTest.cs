@@ -19,15 +19,11 @@ namespace OnionDemo.Domain.Test.BookingTests
             var host = new Host(); // Assuming you have a Host class
             hostRepository.AddHost(host);
 
-            var accommodation = new Accommodation
-            {
-                Id = 1,
-                Id = host.Id
-            };
+            var fakeAccommodation = new FakeAccommodation(1, host.Id);
 
             // Act
-            accommodationRepository.AddAccommodation(accommodation);
-            var result = accommodationRepository.GetAccommodation(accommodation.Id);
+            accommodationRepository.AddAccommodation(fakeAccommodation);
+            var result = accommodationRepository.GetAccommodation(fakeAccommodation.Id);
 
             // Assert
             Assert.NotNull(result);

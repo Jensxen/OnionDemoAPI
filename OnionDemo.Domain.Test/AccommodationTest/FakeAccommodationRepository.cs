@@ -1,17 +1,13 @@
 ﻿using OnionDemo.Application.IRepository;
-using OnionDemo.Application.Repository;
 using OnionDemo.Domain.Entity;
 using System.Collections.Generic;
 using System.Linq;
+using OnionDemo.Application.Repository;
 
 namespace OnionDemo.Domain.Test.BookingTests.Fakes
 {
-    public class FakeAccommodation : Accommodation
+    public class FakeAccommodationRepository : IAccommodationRepository
     {
-        public FakeAccommodation(int id, int hostId)
-            : base(id, hostId)
-        {
-        }
         private readonly List<Accommodation> _accommodations = new List<Accommodation>();
 
         public Accommodation GetAccommodation(int id)
@@ -39,7 +35,6 @@ namespace OnionDemo.Domain.Test.BookingTests.Fakes
             throw new NotImplementedException();
         }
 
+        // Add other methods as needed
     }
 }
-
-
