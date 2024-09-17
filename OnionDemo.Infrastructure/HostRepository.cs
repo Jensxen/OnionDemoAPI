@@ -1,27 +1,36 @@
-﻿using OnionDemo.Application.IRepository;
+﻿using Microsoft.EntityFrameworkCore;
+using OnionDemo.Application.IRepository;
 using OnionDemo.Domain.Entity;
 
 namespace OnionDemo.Infrastructure;
 
 public class HostRepository : IHostRepository
 {
-    public Host GetHost(int hostId)
+    private readonly BookMyHomeContext _db;
+    public HostRepository(BookMyHomeContext db)
     {
-        throw new NotImplementedException();
+        _db = db;
     }
 
-    public void AddHost(Host host)
+    Host IHostRepository.GetHost(int hostId)
     {
-        throw new NotImplementedException();
+        return _db.Hosts.Single(h => h.Id == hostId);
     }
 
-    public void UpdateHost(Host host)
+    void IHostRepository.AddHost(Host host)
     {
-        throw new NotImplementedException();
+        _db.Hosts.Add(host);
     }
 
-    public void DeleteHost(int hostId)
+    void IHostRepository.UpdateHost(Host host, byte[] rowVersion)
     {
-        throw new NotImplementedException();
+        _db.Entry(host).Property(nameof(host.RowVersion)).OriginalValue = rowVersion;
+        _db.Hosts.Update(host);
+    }
+
+    public void DeleteHost(Host host, byte[] rowVersion)
+    {
+        _db.Entry(host).Property(nameof(host.RowVersion)).OriginalValue = rowVersion;
+        _db.Hosts.Remove(host);
     }
 }

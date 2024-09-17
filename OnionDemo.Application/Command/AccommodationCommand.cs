@@ -20,7 +20,7 @@ public class AccommodationCommand : IAccommodationCommand
         _unitOfWork = unitOfWork;
     }
 
-    public void AddAccommodation(AddAccommodationDto accommodationDto)
+    void IAccommodationCommand.AddAccommodation(AddAccommodationDto accommodationDto)
     {
         try
         {
@@ -60,7 +60,7 @@ public class AccommodationCommand : IAccommodationCommand
         }
     }
 
-    public void DeleteAccommodation(DeleteAccommodationDto AccommodationDto)
+     void IAccommodationCommand.DeleteAccommodation(DeleteAccommodationDto AccommodationDto)
     {
         try
         {

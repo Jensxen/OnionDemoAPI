@@ -31,8 +31,4 @@
     <ProjectReference Include="..\OnionDemo.Domain\OnionDemo.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="AccommodationTest\" />
-  </ItemGroup>
-
 </Project>
