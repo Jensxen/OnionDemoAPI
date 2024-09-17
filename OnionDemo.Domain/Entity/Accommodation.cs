@@ -2,7 +2,9 @@
 
 public class Accommodation: DomainEntity
 {
+    
     public List<Booking> Bookings { get; protected set; }
+    public int HostId { get; protected set; }
     public Host Host { get; protected set; }
 
     //public int HostId { get; protected set; }
@@ -27,6 +29,12 @@ public class Accommodation: DomainEntity
 
     public Accommodation()
     {
+    }
+
+    public Accommodation(int id, int hostId)
+    {
+        Id = id;
+        HostId = hostId;
     }
 
     public Accommodation(Host host)

@@ -8,6 +8,7 @@ namespace OnionDemo.Domain.Entity
 {
     public class Host : DomainEntity
     {
+        public int HostId { get; protected set; }
         public string Name { get; protected set; }
         public List<Accommodation> Accommodations {get; protected set; }
 
@@ -16,9 +17,9 @@ namespace OnionDemo.Domain.Entity
         }
 
        
-        public Host(int id)
+        public Host(int hostId)
         {
-            Id = id;
+            HostId = hostId;
         }
 
         public void Delete()
