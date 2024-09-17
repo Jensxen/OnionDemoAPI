@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnionDemo.Application;
+using OnionDemo.Application.IRepository;
 using OnionDemo.Application.Query;
 using OnionDemo.Application.Repository;
 using OnionDemo.Domain.DomainServices;
@@ -18,6 +19,7 @@ public static class DependencyInjection
         services.AddScoped<IBookingRepository, BookingRepository>();
         services.AddScoped<IAccommodationRepository, AccommodationRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork<BookMyHomeContext>>();
+        services.AddScoped<IHostRepository, HostRepository>();
 
         // Register DbContext
         services.AddDbContext<BookMyHomeContext>(options =>
@@ -26,6 +28,12 @@ public static class DependencyInjection
                     ("BookMyHomeDbConnection"),
                 x => 
                     x.MigrationsAssembly("OnionDemo.DatabaseMigration")));
+
+        //services.AddScoped<IUnitOfWork, UnitOfWork>(u =>
+        //{
+        //    var db = u.GetService<BookMyHomeContext>();
+        //    return new UnitOfWork<>
+        //});
 
         return services;
     }

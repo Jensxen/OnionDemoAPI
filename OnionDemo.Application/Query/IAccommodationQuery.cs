@@ -10,5 +10,6 @@ namespace OnionDemo.Application.Query;
 public interface IAccommodationQuery
 {
     AccommodationDto GetAccommodation(int id);
-    IEnumerable<AccommodationDto> GetAccommodations();
+    IEnumerable<AccommodationDto> GetAccommodation();
+    IEnumerable<AccommodationDto> GetAccommodations(int hostId);
 }

@@ -15,57 +15,34 @@ namespace OnionDemo.Infrastructure
             _context = context;
         }
 
-        public Accommodation GetAccommodation(int id)
-        {
-            return _context.Accommodations
-                .Include(a => a.Bookings)
-                .FirstOrDefault(a => a.Id == id);
-        }
-
-        public void AddAccommodation(Accommodation accommodation)
+        void IAccommodationRepository.AddAccommodation(Accommodation accommodation)
         {
             _context.Accommodations.Add(accommodation);
-            _context.SaveChanges();
         }
 
-        public void UpdateAccommodation(Accommodation accommodation, byte[] rowversion)
-        {
-            _context.Accommodations.Update(accommodation);
-            _context.SaveChanges();
-        }
-
-        public IEnumerable<Accommodation> getOtherAccommodations()
+        Accommodation IAccommodationRepository.GetAccommodation(int id)
         {
             return _context.Accommodations
-                .Include(a => a.Bookings)
-                .ToList();
+                .Single(a => a.Id == id);
         }
 
-        public void DeleteAccommodation(int id, byte[] rowversion)
-        {
-            var accommodation = _context.Accommodations.Find(id);
-            if (accommodation != null)
-            {
-                _context.Accommodations.Remove(accommodation);
-                _context.SaveChanges();
-            }
-        }
-
-        public Accommodation GetAccommodationById(int id)
+        Accommodation IAccommodationRepository.GetAccomodationWithBooking(int id)
         {
             return _context.Accommodations
                 .Include(a => a.Bookings)
                 .FirstOrDefault(a => a.Id == id);
         }
 
-        public void DeleteAccommodation(int id)
+        void IAccommodationRepository.UpdateAccommodation(Accommodation accommodation, byte[] rowVersion)
         {
-            var accommodation = _context.Accommodations.Find(id);
-            if (accommodation != null)
-            {
-                _context.Accommodations.Remove(accommodation);
-                _context.SaveChanges();
-            }
+            _context.Entry(accommodation).Property(nameof(accommodation.RowVersion)).OriginalValue = rowVersion;
+            _context.Accommodations.Update(accommodation);
+        }
+
+        void IAccommodationRepository.DeleteAccommodation(Accommodation accommodation, byte[] rowVersion)
+        {
+            _context.Entry(accommodation).Property(nameof(accommodation.RowVersion)).OriginalValue = rowVersion;
+            _context.Accommodations.Remove(accommodation);
         }
     }
 }

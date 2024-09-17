@@ -91,7 +91,7 @@ namespace OnionDemo.Application.Command
                 {
                     throw new Exception("Booking not found.");
                 }
-                _repository.DeleteBooking(deleteBookingDto.Id);
+                _repository.DeleteBooking(booking, deleteBookingDto.RowVersion);
                 _uow.Commit();
 
             }

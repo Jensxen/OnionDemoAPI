@@ -8,11 +8,11 @@ namespace OnionDemo.Domain.Entity
 {
     public class Host : DomainEntity
     {
-        public int HostId { get; protected set; }
-        public string HostName {get; protected set; }
-        public string HostEmail {get; protected set; }
-        public int HostPhoneNumber {get; protected set; }
         public List<Accommodation> Accommodations {get; protected set; }
+        //public int HostId { get; protected set; }
+        //public string HostName {get; protected set; }
+        //public string HostEmail {get; protected set; }
+        //public int HostPhoneNumber {get; protected set; }
 
     }
 }

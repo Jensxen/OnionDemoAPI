@@ -5,8 +5,8 @@ namespace OnionDemo.Application.Repository;
 public interface IAccommodationRepository
 {
     Accommodation GetAccommodation(int id);
+    Accommodation GetAccomodationWithBooking(int id);
     void AddAccommodation(Accommodation accommodation);
-    void UpdateAccommodation(Accommodation accommodation, byte[] rowversion);
-    IEnumerable<Accommodation> getOtherAccommodations();
-    void DeleteAccommodation(Accommodation accommodation, byte[] rowversion);
+    void UpdateAccommodation(Accommodation accommodation, byte[] rowVersion);
+    void DeleteAccommodation(Accommodation accommodation, byte[] rowVersion);
 }

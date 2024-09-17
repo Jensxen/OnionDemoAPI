@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using OnionDemo.Application;
 using OnionDemo.Application.Command;
 using OnionDemo.Application.Command.CommandDto;
@@ -36,13 +37,13 @@ app.MapGet("/booking", (IBookingQuery query) => query.GetBookings());
 app.MapGet("/booking/{id}", (int id, IBookingQuery query) => query.GetBooking(id));
 app.MapPost("/booking", (CreateBookingDto booking, IBookingCommand command) => command.CreateBooking(booking));
 app.MapPut("/booking", (UpdateBookingDto booking, IBookingCommand command) => command.UpdateBooking(booking));
+app.MapDelete("/Delete", ([FromBody] DeleteBookingDto booking, IBookingCommand command) => command.DeleteBooking(booking));
 
-//DELETE
-app.MapDelete("/booking/{id}", (int id, IBookingCommand command) =>
-{
-    var deleteBookingDto = new DeleteBookingDto { Id = id };
-    command.DeleteBooking(deleteBookingDto);
-    return Results.Ok(new { message = "Electrochemistry [Legendary: Success] - Booking blev fucking slettet baybeeeeeeee." });
-});
+
+//Accommodation endpoints
+//app.MapGet("/accommodation", (IAccommodationQuery query) => query.GetAccommodation());
+//app.MapGet("/accommodation/{id}", (int id, IAccommodationQuery query) => query.GetAccommodation(id));
+//app.MapGet("/accommodation/host/{hostId}", (int hostId, IAccommodationQuery query) => query.GetAccommodations(hostId));
+
 
 app.Run();

@@ -2,10 +2,9 @@
 
 namespace OnionDemo.Application.Command.CommandDto;
 
-public class UpdateAccommodationDto
+public class AddAccommodationDto
 {
-    public int Id { get; set; }
-    public byte[] RowVersion { get; set; } = null!;
+    public int HostId { get; set; }
     //public string Name { get; set; }
     //public string Description { get; set; }
     //public string Address { get; set; }

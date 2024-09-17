@@ -24,8 +24,10 @@ public class UnitOfWork<T> : IUnitOfWork where T : DbContext
     void IUnitOfWork.Commit()
     {
         if (_transaction == null) throw new Exception("You must call 'BeginTransaction' before Commit is called");
+        _db.SaveChanges();
         _transaction.Commit();
         _transaction.Dispose();
+        _transaction = null;
     }
 
     void IUnitOfWork.Rollback()
@@ -33,5 +35,6 @@ public class UnitOfWork<T> : IUnitOfWork where T : DbContext
         if (_transaction == null) throw new Exception("You must call 'BeginTransaction' before Rollback is called");
         _transaction.Rollback();
         _transaction.Dispose();
+        _transaction = null;
     }
 }
