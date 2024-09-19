@@ -42,7 +42,7 @@ public class AccommodationCommand : IAccommodationCommand
         try
         {
             _unitOfWork.BeginTransaction();
-            
+
             var accommodation = _accommodationRepository.GetAccommodation(accommodationDto.Id);
             if (accommodation == null)
             {
@@ -60,7 +60,7 @@ public class AccommodationCommand : IAccommodationCommand
         }
     }
 
-     void IAccommodationCommand.DeleteAccommodation(DeleteAccommodationDto AccommodationDto)
+    void IAccommodationCommand.DeleteAccommodation(DeleteAccommodationDto AccommodationDto)
     {
         try
         {
@@ -75,6 +75,24 @@ public class AccommodationCommand : IAccommodationCommand
             _unitOfWork.Commit();
         }
         catch (Exception)
+        {
+            _unitOfWork.Rollback();
+            throw;
+        }
+    }
+
+    void IAccommodationCommand.CreateBooking(CreateBookingDto bookingDto)
+    {
+        try
+        {
+            _unitOfWork.BeginTransaction();
+
+            Accommodation accommodation = _accommodationRepository.GetAccommodation(bookingDto.AccommodationId);
+            accommodation.CreateBooking(bookingDto.StartDate, bookingDto.EndDate);
+            _accommodationRepository.CreateBooking(bookingDto.StartDate, bookingDto.EndDate);
+            _unitOfWork.Commit();
+        }
+        catch (Exception e)
         {
             _unitOfWork.Rollback();
             throw;

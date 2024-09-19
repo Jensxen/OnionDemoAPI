@@ -44,5 +44,10 @@ namespace OnionDemo.Infrastructure
             _context.Entry(accommodation).Property(nameof(accommodation.RowVersion)).OriginalValue = rowVersion;
             _context.Accommodations.Remove(accommodation);
         }
+
+        public void CreateBooking(DateOnly startDate, DateOnly endDate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

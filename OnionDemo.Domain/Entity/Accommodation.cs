@@ -1,10 +1,11 @@
-﻿namespace OnionDemo.Domain.Entity;
+﻿using OnionDemo.Domain.DomainServices;
+
+namespace OnionDemo.Domain.Entity;
 
 public class Accommodation: DomainEntity
 {
-    
-    public List<Booking> Bookings { get; protected set; }
-    public int HostId { get; protected set; }
+
+    public List<Booking> Bookings { get; protected set; } = new List<Booking>();
     public Host Host { get; protected set; }
 
     //public int HostId { get; protected set; }
@@ -31,44 +32,12 @@ public class Accommodation: DomainEntity
     {
     }
 
-    public Accommodation(int id, int hostId)
-    {
-        Id = id;
-        HostId = hostId;
-    }
-
     public Accommodation(Host host)
     {
+        Bookings = [];
         Host = host;
+        
     }
-
-    //public Accommodation(Host host, 
-    //    string name, 
-    //    string description, 
-    //    string address, 
-    //    string city, 
-    //    string country, 
-    //    int rooms, 
-    //    int beds, 
-    //    int bathrooms, 
-    //    int maxGuests, 
-    //    double pricePerNight, 
-    //    bool isActive)
-    //{
-    //    Host = host;
-    //    Name = name;
-    //    Description = description;
-    //    Address = address;
-    //    City = city;
-    //    Country = country;
-    //    Rooms = rooms;
-    //    Beds = beds;
-    //    Bathrooms = bathrooms;
-    //    MaxGuests = maxGuests;
-    //    PricePerNight = pricePerNight;
-    //    IsActive = isActive;
-    //}
-    
     //assure no booking before deleting accommodation
 
     protected void AssureNoBookings()
@@ -82,6 +51,11 @@ public class Accommodation: DomainEntity
         AssureNoBookings();
     }
 
+    public IEnumerable<Booking> GetBookings()
+    {
+        return Bookings.AsEnumerable();
+    }
+    
     public static Accommodation Create(Host host)
     {
         return new Accommodation(host);
@@ -92,6 +66,19 @@ public class Accommodation: DomainEntity
         
     }
 
+    public void UpdateBooking(DateOnly startDate, DateOnly endDate, int bookingId)
+    {
+        var booking = Bookings.FirstOrDefault(b => b.Id == bookingId);
+        if (booking == null)
+            throw new ArgumentException("Booking not found");
+        booking.Update(startDate, endDate, GetBookings());
+    }
+
+    public void CreateBooking(DateOnly startDate, DateOnly endDate)
+    {
+        var booking = Booking.Create(startDate, endDate, GetBookings());
+        Bookings.Add(booking);
+    }
 
     //public void Update(Host host, 
     //    string name, 

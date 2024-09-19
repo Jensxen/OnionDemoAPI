@@ -23,6 +23,7 @@ namespace OnionDemo.Infrastructure
         void IBookingRepository.AddBooking(Booking booking)
         {
             _db.Bookings.Add(booking);
+            _db.SaveChanges();
         }
 
         Booking IBookingRepository.GetBooking(int id)
@@ -33,13 +34,14 @@ namespace OnionDemo.Infrastructure
         void IBookingRepository.UpdateBooking(Booking booking, byte[] rowVersion)
         { 
             _db.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowVersion;
-            _db.Bookings.Update(booking);
+            _db.SaveChanges();
         }
 
         void IBookingRepository.DeleteBooking(Booking booking, byte[] rowVersion)
         {
             _db.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowVersion;
             _db.Bookings.Remove(booking);
+            _db.SaveChanges();
         }
     }
 }

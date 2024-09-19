@@ -12,19 +12,19 @@ public class Booking : DomainEntity
 
     }
 
-    private Booking(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService)
+    private Booking(DateOnly startDate, DateOnly endDate, IEnumerable<Booking> existingBookings)
     {
         StartDate = startDate;
         EndDate = endDate;
 
         AssureStartDateBeforeEndDate();
         AssureBookingSkalVæreIFremtiden(DateOnly.FromDateTime(DateTime.Now));
-        AssureNoOverlapping(bookingDomainService.GetOtherBookings(this));
+        
     }
 
     public DateOnly StartDate { get; protected set; }
     public DateOnly EndDate { get; protected set; }
-    public Accommodation Accommodation { get; protected set; }
+    //public Accommodation Accommodation { get; protected set; }
     //public Host Host { get; protected set; }
 
     protected void AssureStartDateBeforeEndDate()
@@ -54,20 +54,22 @@ public class Booking : DomainEntity
     /// </summary>
     /// <param name="startDate"></param>
     /// <param name="endDate"></param>
-    /// <param name="bookingDomainService"></param>
+    /// <param name="existingBookings"></param>
     /// <returns></returns>
-    public static Booking Create(DateOnly startDate, DateOnly endDate, IBookingDomainService bookingDomainService)
+    public static Booking Create(DateOnly startDate, DateOnly endDate, IEnumerable<Booking> existingBookings)
     {
-        return new Booking(startDate, endDate, bookingDomainService);
+        return new Booking(startDate, endDate, existingBookings);
     }
 
-    public void Update(DateOnly startDate, DateOnly endDate, IBookingDomainService domainService)
+    public void Update(DateOnly startDate, DateOnly endDate, IEnumerable<Booking> existingBookings)
     {
         StartDate = startDate;
         EndDate = endDate;
 
         AssureStartDateBeforeEndDate();
         AssureBookingSkalVæreIFremtiden(DateOnly.FromDateTime(DateTime.Now));
-        AssureNoOverlapping(domainService.GetOtherBookings(this));
+        AssureNoOverlapping(existingBookings);
+        
+        
     }
 }

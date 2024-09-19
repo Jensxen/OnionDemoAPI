@@ -16,7 +16,7 @@ namespace OnionDemo.Domain.Test.BookingTests
             var unitOfWork = new FakeUnitOfWork();
             var accommodationCommand = new AccommodationCommand(accommodationRepository, hostRepository, unitOfWork);
 
-            var host = new Host(); // Assuming you have a Host class
+            var host = new Host(); 
             hostRepository.AddHost(host);
 
             var fakeAccommodation = new FakeAccommodation(1, host.Id);
@@ -31,7 +31,7 @@ namespace OnionDemo.Domain.Test.BookingTests
             Assert.Equal(host.Id, result.HostId);
         }
 
-        // Add more tests as needed
+        
     }
 }
 
