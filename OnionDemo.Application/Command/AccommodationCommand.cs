@@ -88,13 +88,67 @@ public class AccommodationCommand : IAccommodationCommand
             _unitOfWork.BeginTransaction();
 
             Accommodation accommodation = _accommodationRepository.GetAccommodation(bookingDto.AccommodationId);
+
             accommodation.CreateBooking(bookingDto.StartDate, bookingDto.EndDate);
-            _accommodationRepository.CreateBooking(bookingDto.StartDate, bookingDto.EndDate);
+
+            _accommodationRepository.AddBooking(accommodation);
+
             _unitOfWork.Commit();
         }
         catch (Exception e)
         {
             _unitOfWork.Rollback();
+            throw;
+        }
+    }
+
+    void IAccommodationCommand.UpdateBooking(UpdateBookingDto bookingDto)
+    {
+        try
+        {
+            _unitOfWork.BeginTransaction();
+            Accommodation accommodation = _accommodationRepository.GetAccommodation(bookingDto.AccommodationId);
+
+            accommodation.UpdateBooking(bookingDto.StartDate, bookingDto.EndDate, bookingDto.Id);
+
+            _accommodationRepository.UpdateBooking(accommodation, bookingDto.RowVersion);
+
+            _unitOfWork.Commit();
+        }
+        catch (Exception e)
+        {
+            try
+            {
+                _unitOfWork.Rollback();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Rollback failed: {ex.Message}", e);
+            }
+            throw;
+        }
+    }
+
+    void IAccommodationCommand.DeleteBooking(DeleteBookingDto bookingDto)
+    {
+        try
+        {
+            _unitOfWork.BeginTransaction();
+            Accommodation accommodation = _accommodationRepository.GetAccommodation(bookingDto.AccommodationId);
+
+            accommodation.DeleteBooking(bookingDto.Id);
+            _unitOfWork.Commit();
+        }
+        catch (Exception e)
+        {
+            try
+            {
+                _unitOfWork.Rollback();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Rollback failed:{ex.Message}", e);
+            }
             throw;
         }
     }

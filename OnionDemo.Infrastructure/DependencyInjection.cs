@@ -15,11 +15,12 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IBookingQuery, BookingQuery>();
-        services.AddScoped<IBookingDomainService, BookingDomainService>();
+        //services.AddScoped<IBookingDomainService, BookingDomainService>();
         services.AddScoped<IBookingRepository, BookingRepository>();
         services.AddScoped<IAccommodationRepository, AccommodationRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork<BookMyHomeContext>>();
         services.AddScoped<IHostRepository, HostRepository>();
+        services.AddScoped<IHostQuery, HostQuery>();
 
         // Register DbContext
         services.AddDbContext<BookMyHomeContext>(options =>

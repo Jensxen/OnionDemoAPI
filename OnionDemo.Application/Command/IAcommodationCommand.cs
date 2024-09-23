@@ -8,4 +8,7 @@ public interface IAccommodationCommand
     void UpdateAccommodation(UpdateAccommodationDto AccommodationDto);
     void DeleteAccommodation(DeleteAccommodationDto AccommodationDto);
     void CreateBooking(CreateBookingDto bookingDto);
+    void UpdateBooking(UpdateBookingDto updateBookingDto);
+    void DeleteBooking(DeleteBookingDto deleteBookingDto);
+
 }

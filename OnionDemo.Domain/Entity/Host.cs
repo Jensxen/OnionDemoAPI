@@ -10,7 +10,8 @@ namespace OnionDemo.Domain.Entity
     {
         public int HostId { get; protected set; }
         public string Name { get; protected set; }
-        public List<Accommodation> Accommodations {get; protected set; }
+        private readonly List<Accommodation> _accommodations;
+        public IReadOnlyCollection<Accommodation> Accommodations => _accommodations;
 
         public Host()
         {

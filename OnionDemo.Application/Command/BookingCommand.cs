@@ -12,15 +12,15 @@ namespace OnionDemo.Application.Command
 {
     public class BookingCommand : IBookingCommand
     {
-        private readonly IBookingDomainService _domainService;
+        //private readonly IBookingDomainService _domainService;
         private readonly IBookingRepository _repository;
         private readonly IUnitOfWork _uow;
 
-        public BookingCommand(IUnitOfWork uow, IBookingRepository repository, IBookingDomainService domainService)
+        public BookingCommand(IUnitOfWork uow, IBookingRepository repository)
         {
             _uow = uow;
             _repository = repository;
-            _domainService = domainService;
+            //_domainService = domainService;
         }
 
         void IBookingCommand.CreateBooking(CreateBookingDto bookingDto)
@@ -29,8 +29,10 @@ namespace OnionDemo.Application.Command
             {
                 _uow.BeginTransaction();
 
+                var existingBookings = _repository.GetBookings();
+
                 // Do
-                var booking = Booking.Create(bookingDto.StartDate, bookingDto.EndDate, _domainService);
+                var booking = Booking.Create(bookingDto.StartDate, bookingDto.EndDate, existingBookings);
 
                 // Save
                 _repository.AddBooking(booking);
@@ -57,11 +59,13 @@ namespace OnionDemo.Application.Command
             try
             {
                 _uow.BeginTransaction();
+
+                var existingBookings = _repository.GetBookings();
                 // Load
                 var booking = _repository.GetBooking(updateBookingDto.Id);
 
                 // Do
-                booking.Update(updateBookingDto.StartDate, updateBookingDto.EndDate, _domainService);
+                booking.Update(updateBookingDto.StartDate, updateBookingDto.EndDate, existingBookings);
 
                 // Save
                 _repository.UpdateBooking(booking, updateBookingDto.RowVersion);

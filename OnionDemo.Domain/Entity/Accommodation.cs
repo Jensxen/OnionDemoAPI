@@ -4,8 +4,9 @@ namespace OnionDemo.Domain.Entity;
 
 public class Accommodation: DomainEntity
 {
+    private readonly List<Booking> _bookings = new List<Booking>();
 
-    public List<Booking> Bookings { get; protected set; } = new List<Booking>();
+    //public List<Booking> Bookings { get; protected set; } = new List<Booking>();
     public Host Host { get; protected set; }
 
     //public int HostId { get; protected set; }
@@ -28,21 +29,19 @@ public class Accommodation: DomainEntity
     //public List<Service> Services { get; protected set; }
     //public List<Tag> Tags { get; protected set; }
 
-    public Accommodation()
+    protected Accommodation()
     {
     }
 
-    public Accommodation(Host host)
+    protected Accommodation(Host host)
     {
-        Bookings = [];
         Host = host;
-        
     }
     //assure no booking before deleting accommodation
 
     protected void AssureNoBookings()
     {
-        if (Bookings.Any())
+        if (_bookings.Any())
             throw new Exception("Accommodation has bookings, cannot delete");
     }
 
@@ -53,9 +52,11 @@ public class Accommodation: DomainEntity
 
     public IEnumerable<Booking> GetBookings()
     {
-        return Bookings.AsEnumerable();
+        return _bookings.AsEnumerable();
     }
-    
+
+    public IReadOnlyCollection<Booking> Bookings => _bookings;
+
     public static Accommodation Create(Host host)
     {
         return new Accommodation(host);
@@ -68,7 +69,7 @@ public class Accommodation: DomainEntity
 
     public void UpdateBooking(DateOnly startDate, DateOnly endDate, int bookingId)
     {
-        var booking = Bookings.FirstOrDefault(b => b.Id == bookingId);
+        var booking = _bookings.FirstOrDefault(b => b.Id == bookingId);
         if (booking == null)
             throw new ArgumentException("Booking not found");
         booking.Update(startDate, endDate, GetBookings());
@@ -77,7 +78,15 @@ public class Accommodation: DomainEntity
     public void CreateBooking(DateOnly startDate, DateOnly endDate)
     {
         var booking = Booking.Create(startDate, endDate, GetBookings());
-        Bookings.Add(booking);
+        _bookings.Add(booking);
+    }
+
+    public void DeleteBooking(int bookingId)
+    {
+        var booking = _bookings.FirstOrDefault(b => b.Id == bookingId);
+        if (booking == null)
+            throw new ArgumentException("Booking not found");
+        _bookings.Remove(booking);
     }
 
     //public void Update(Host host, 

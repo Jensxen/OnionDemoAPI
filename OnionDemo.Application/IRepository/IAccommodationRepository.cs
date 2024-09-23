@@ -9,5 +9,7 @@ public interface IAccommodationRepository
     void AddAccommodation(Accommodation accommodation);
     void UpdateAccommodation(Accommodation accommodation, byte[] rowVersion);
     void DeleteAccommodation(Accommodation accommodation, byte[] rowVersion);
-    void CreateBooking(DateOnly startDate, DateOnly endDate);
+    void AddBooking(Accommodation booking);
+    void UpdateBooking(Accommodation booking, byte[] rowVersion);
+    void DeleteBooking(Accommodation booking, byte[] rowVersion);
 }

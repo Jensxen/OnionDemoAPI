@@ -7,4 +7,6 @@ public class HostDto
     public int Id { get; set; }
     [Timestamp]
     public byte[] RowVersion { get; set; }
+
+    public IEnumerable<AccommodationDto>? Accommodations { get; set; }
 }

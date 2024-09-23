@@ -8,8 +8,11 @@ public record AccommodationDto()
 
 
     public int Id { get; set; }
-    [Timestamp]
-    public byte[] RowVersion { get; set; }
+    
+    public int HostId { get; set; }
+
+    public IEnumerable<BookingDto>? Bookings { get; set; }
+
     //public int HostId { get; set; }
     //public string Name { get; set; }
     //public string Description { get; set; }

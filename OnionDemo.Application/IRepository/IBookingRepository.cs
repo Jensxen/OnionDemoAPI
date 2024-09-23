@@ -9,6 +9,7 @@ namespace OnionDemo.Application
 {
     public interface IBookingRepository
     {
+        IEnumerable<Booking> GetBookings();
         Booking GetBooking(int id);
         void AddBooking(Booking booking);
         void UpdateBooking(Booking booking, byte[] rowVersion);

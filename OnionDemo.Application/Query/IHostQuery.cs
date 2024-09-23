@@ -11,4 +11,6 @@ public interface IHostQuery
 {
     HostDto getHost(int id);
     IEnumerable<HostDto> getHosts();
+
+    HostDto GetAccommodations(int id);
 }

@@ -22,8 +22,7 @@ namespace OnionDemo.Infrastructure
 
         Accommodation IAccommodationRepository.GetAccommodation(int id)
         {
-            return _context.Accommodations
-                .Single(a => a.Id == id);
+            return _context.Accommodations.FirstOrDefault(a => a.Id == id);
         }
 
         Accommodation IAccommodationRepository.GetAccomodationWithBooking(int id)
@@ -45,9 +44,21 @@ namespace OnionDemo.Infrastructure
             _context.Accommodations.Remove(accommodation);
         }
 
-        public void CreateBooking(DateOnly startDate, DateOnly endDate)
+        public void AddBooking(Accommodation booking)
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
+        }
+
+        public void UpdateBooking(Accommodation booking, byte[] rowVersion)
+        {
+            _context.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowVersion;
+            _context.SaveChanges();
+        }
+
+        public void DeleteBooking(Accommodation booking, byte[] rowVersion)
+        {
+            _context.Entry(booking).Property(nameof(booking.RowVersion)).OriginalValue = rowVersion;
+            _context.SaveChanges();
         }
     }
 }

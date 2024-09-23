@@ -26,6 +26,12 @@ namespace OnionDemo.Infrastructure
             _db.SaveChanges();
         }
 
+
+        public IEnumerable<Booking> GetBookings()
+        {
+            return _db.Bookings.ToList();
+        }
+
         Booking IBookingRepository.GetBooking(int id)
         {
             return _db.Bookings.Single(a => a.Id == id);
