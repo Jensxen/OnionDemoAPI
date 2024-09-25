@@ -21,7 +21,8 @@ public class Booking : DomainEntity
         AssureBookingSkalVæreIFremtiden(DateOnly.FromDateTime(DateTime.Now));
         
     }
-
+    public int GuestId { get; protected set; }
+    public int AccommodationId { get; protected set; }
     public DateOnly StartDate { get; protected set; }
     public DateOnly EndDate { get; protected set; }
     //public Accommodation Accommodation { get; protected set; }
@@ -47,6 +48,11 @@ public class Booking : DomainEntity
                 (StartDate >= other.StartDate && StartDate <= other.EndDate) ||
                 (StartDate <= other.StartDate && EndDate >= other.EndDate)))
             throw new Exception("Booking overlapper med en anden booking");
+    }
+
+    public bool IsPastBooking()
+    {
+        return EndDate < DateOnly.FromDateTime(DateTime.Now);
     }
 
     /// <summary>

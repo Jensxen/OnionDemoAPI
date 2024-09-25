@@ -6,7 +6,7 @@ namespace OnionDemo.Infrastructure;
 public class ReviewRepository : IReviewRepository
 {
     private readonly List<Review> _reviews = new List<Review>();
-    public void AddReview(Review review)
+    void IReviewRepository.AddReview(Review review)
     {
         _reviews.Add(review);
     }

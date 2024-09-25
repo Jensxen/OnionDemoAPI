@@ -11,6 +11,7 @@ namespace OnionDemo.Application
     {
         IEnumerable<Booking> GetBookings();
         Booking GetBooking(int id);
+        IEnumerable<Booking> GetPastBookings(int guestId);
         void AddBooking(Booking booking);
         void UpdateBooking(Booking booking, byte[] rowVersion);
         void DeleteBooking(Booking booking, byte[] rowVersion);

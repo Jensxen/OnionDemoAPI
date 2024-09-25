@@ -32,6 +32,11 @@ namespace OnionDemo.Infrastructure
             return _db.Bookings.ToList();
         }
 
+        public IEnumerable<Booking> GetPastBookings(int guestId)
+        {
+            return _db.Bookings.Where(a => a.GuestId == guestId && a.IsPastBooking()).ToList();
+        }
+
         Booking IBookingRepository.GetBooking(int id)
         {
             return _db.Bookings.Single(a => a.Id == id);
