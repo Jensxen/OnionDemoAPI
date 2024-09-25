@@ -25,6 +25,14 @@ namespace OnionDemo.Infrastructure
             return _context.Accommodations.FirstOrDefault(a => a.Id == id);
         }
 
+        IEnumerable<Accommodation> IAccommodationRepository.GetAccommodationsByHostId(int hostId)
+        {
+            return _context.Accommodations
+                .Include(a => a.Reviews)
+                .Where(a => a.HostId == hostId)
+                .ToList();
+        }
+
         Accommodation IAccommodationRepository.GetAccomodationWithBooking(int id)
         {
             return _context.Accommodations

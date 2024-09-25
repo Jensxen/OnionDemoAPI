@@ -11,5 +11,5 @@ public interface IAccommodationQuery
 {
     AccommodationDto GetAccommodation(int id);
     IEnumerable<AccommodationDto> GetAccommodation();
-    IEnumerable<AccommodationDto> GetAccommodations(int hostId);
+    IEnumerable<AccommodationDto> GetAccommodationsByHostId(int hostId);
 }
