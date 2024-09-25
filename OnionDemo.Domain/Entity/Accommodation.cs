@@ -8,6 +8,7 @@ public class Accommodation: DomainEntity
 
     //public List<Booking> Bookings { get; protected set; } = new List<Booking>();
     public Host Host { get; protected set; }
+    public ICollection<Review> Reviews { get; protected set; } = new List<Review>();
 
     //public int HostId { get; protected set; }
     //public string Name { get; protected set; }

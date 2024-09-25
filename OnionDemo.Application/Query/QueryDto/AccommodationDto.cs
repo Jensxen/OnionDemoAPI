@@ -13,6 +13,8 @@ public record AccommodationDto()
 
     public IEnumerable<BookingDto>? Bookings { get; set; }
 
+    public List<ReviewDto> Reviews { get; set; } = new List<ReviewDto>();
+
     //public int HostId { get; set; }
     //public string Name { get; set; }
     //public string Description { get; set; }
