@@ -1,4 +1,5 @@
 ﻿using OnionDemo.Domain.DomainServices;
+using OnionDemo.Domain.ValueObjects;
 
 namespace OnionDemo.Domain.Entity;
 
@@ -10,6 +11,8 @@ public class Accommodation: DomainEntity
     public Host Host { get; protected set; }
     public int HostId { get; protected set; }
     public ICollection<Review> Reviews { get; protected set; } = new List<Review>();
+
+    public Address Address { get; protected set; }
 
     //public int HostId { get; protected set; }
     //public string Name { get; protected set; }
@@ -31,6 +34,12 @@ public class Accommodation: DomainEntity
     //public List<Service> Services { get; protected set; }
     //public List<Tag> Tags { get; protected set; }
 
+    public Accommodation(Host host, Address address)
+    {
+        Host = host;
+        Address = address;
+    }
+    
     protected Accommodation()
     {
     }
@@ -38,6 +47,11 @@ public class Accommodation: DomainEntity
     protected Accommodation(Host host)
     {
         Host = host;
+    }
+
+    public void AddReview(Review review)
+    {
+        Reviews.Add(review);
     }
     //assure no booking before deleting accommodation
 

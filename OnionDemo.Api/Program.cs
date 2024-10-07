@@ -16,7 +16,19 @@ builder.Services.AddSwaggerGen();
 // Application and Infrastructure services
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddControllers();
 
+builder.Services.AddHttpClient("AddressApi", client =>
+{
+    client.BaseAddress = new Uri("https://api.dataforsyningen.dk/adresser?q=");
+    client.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory");
+});
+
+builder.Services.AddScoped<IAddressValidationQuery, AddressValidationQuery>(sp =>
+{
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    return new AddressValidationQuery(httpClientFactory);
+});
 
 
 var app = builder.Build();
