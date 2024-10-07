@@ -34,4 +34,9 @@ public class AddressValidationQuery : IAddressValidationQuery
 
         return addresses.Any();
     }
+
+    public void CheckPendingAddresses()
+    {
+        throw new NotImplementedException();
+    }
 }

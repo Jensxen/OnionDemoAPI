@@ -4,5 +4,6 @@ namespace OnionDemo.Application.Query;
 
 public interface IAddressValidationQuery
 {
-    bool ValidateAddress(Address address);
+    public bool ValidateAddress(Address address);
+    void CheckPendingAddresses();
 }

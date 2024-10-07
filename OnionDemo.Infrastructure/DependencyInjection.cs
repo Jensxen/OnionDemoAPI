@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnionDemo.Application;
+using OnionDemo.Application.Command;
 using OnionDemo.Application.IRepository;
 using OnionDemo.Application.Query;
 using OnionDemo.Application.Repository;
@@ -21,6 +22,11 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork<BookMyHomeContext>>();
         services.AddScoped<IHostRepository, HostRepository>();
         services.AddScoped<IHostQuery, HostQuery>();
+        services.AddScoped<IAddressValidationCommand, AddressValidationCommand>();
+        services.AddScoped<IAddressRepository, AddressRepository>();
+        services.AddScoped<IDawaQuery, DawaQuery>();
+        services.AddHostedService<PendingAddressChecker>();
+
 
         // Register DbContext
         services.AddDbContext<BookMyHomeContext>(options =>

@@ -5,6 +5,8 @@ using OnionDemo.Application.Command.CommandDto;
 using OnionDemo.Application.Query;
 using OnionDemo.Infrastructure;
 using OnionDemo.Infrastructure.Queries;
+using OnionDemo.Api.Controllers;
+using OnionDemo.Application.IRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,18 +20,13 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 
-builder.Services.AddHttpClient("AddressApi", client =>
-{
-    client.BaseAddress = new Uri("https://api.dataforsyningen.dk/adresser?q=");
-    client.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory");
-});
+builder.Services.AddHttpClient();
 
-builder.Services.AddScoped<IAddressValidationQuery, AddressValidationQuery>(sp =>
-{
-    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
-    return new AddressValidationQuery(httpClientFactory);
-});
-
+builder.Services.AddScoped<IAddressValidationCommand, AddressValidationCommand>();
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<IDawaQuery, DawaQuery>();
+builder.Services.AddHostedService<PendingAddressChecker>();
+builder.Services.AddScoped<IAddressValidationQuery, AddressValidationQuery>();
 
 var app = builder.Build();
 
@@ -57,5 +54,6 @@ app.MapDelete("/Delete", ([FromBody] DeleteBookingDto booking, IBookingCommand c
 //app.MapGet("/accommodation/{id}", (int id, IAccommodationQuery query) => query.GetAccommodation(id));
 //app.MapGet("/accommodation/host/{hostId}", (int hostId, IAccommodationQuery query) => query.GetAccommodations(hostId));
 
+app.MapControllers();
 
 app.Run();
